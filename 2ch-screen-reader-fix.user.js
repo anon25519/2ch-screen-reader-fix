@@ -183,7 +183,7 @@ function processPost(post, isOppost = false) {
         newFiles.appendChild(listitem);
     }
 
-    let hideButton = document.createElement('button');
+    let hideButton = document.createElement('a');
     hideButton.id = `hideButton${newHeading.id}`;
     if (isOppost) {
         hideButton.textContent = 'Скрыть тред';
