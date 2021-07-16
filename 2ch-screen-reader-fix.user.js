@@ -250,6 +250,8 @@ function isMakaba() {
 // Работаем только на главной и в тредах
 if (!isMakaba()) return;
 
+let isInThread = document.getElementsByClassName('thread').length == 1;
+
 // Подписка на изменение DOM
 // Select the node that will be observed for mutations
 var targetNodeThread = document.getElementsByClassName('thread')[0];
@@ -265,7 +267,7 @@ let totalTime = 0;
 function processThread() {
     let t1 = performance.now();
     observerThread.disconnect();
-    observerBoard.disconnect();
+    if (!isInThread) observerBoard.disconnect();
     let postsCollection = document.getElementsByClassName('thread__post');
 
     let posts = [];
@@ -307,7 +309,7 @@ function processThread() {
         }
     }
     observerThread.observe(targetNodeThread, config);
-    observerBoard.observe(targetNodeBoard, config);
+    if (!isInThread) observerBoard.observe(targetNodeBoard, config);
     let t2 = performance.now();
     totalTime += t2 - t1;
     //console.log('=== time: ' + (t2 - t1) + ', total: ' + totalTime);
@@ -323,9 +325,9 @@ var callback = function(mutationsList) {
 };
 
 observerThread = new MutationObserver(callback);
-observerBoard = new MutationObserver(callback);
+if (!isInThread) observerBoard = new MutationObserver(callback);
 
 observerThread.observe(targetNodeThread, config);
-observerBoard.observe(targetNodeBoard, config);
+if (!isInThread) observerBoard.observe(targetNodeBoard, config);
 
 setTimeout(processThread, 500);
