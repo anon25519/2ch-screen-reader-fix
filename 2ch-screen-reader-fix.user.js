@@ -277,7 +277,7 @@ function processThread() {
 
     let postsId = [];
     for (let post of posts) {
-        postsId.push(parseInt(processPost(post)));
+        if (isInThread) postsId.push(parseInt(processPost(post)));
         post.remove();
     }
 
